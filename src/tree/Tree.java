@@ -1,5 +1,9 @@
 package tree;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
 /**
  *
  * @author Paweł
@@ -27,7 +31,7 @@ public class Tree {
         root = insert(root, i, v);
     }
 
-    public Node insert(Node n, int i, double v) {
+    private Node insert(Node n, int i, double v) {
 
         if (n == null) {
             Node newNode = new Node(i, v);
@@ -57,7 +61,7 @@ public class Tree {
 
     }
 
-    public Node get(Node n, int i) {
+    private Node get(Node n, int i) {
 
         if (n == null) {
             return null;
@@ -73,38 +77,86 @@ public class Tree {
 
     }
 
-    public void printTree() {
-        printTree(root);
+    public void printMe() {
+        printTree(root, 0);
     }
 
-    public void printTree(Node n) {
+    private void printTree(Node n, int d) {
         if (n != null) {
             if (n.left != null) {
-                printTree(n.left);
+                printTree(n.left, d + 1);
             }
-            System.out.println("Indeks: " + n.index + " Wartość: " + n.value);
+            int i;
+            for (i = 0; i < d; i++) {
+                System.out.print("   ");
+            }
+            System.out.println("Indeks: " + n.index + " Wartość: " + n.value + " Głębokość: " + d);
             if (n.right != null) {
-                printTree(n.right);
+                printTree(n.right, d + 1);
             }
 
         }
 
     }
 
+    public void add(int i, double v) {
+        root = insert(root, i, v);
+    }
+
+    public void readFile(String name) throws FileNotFoundException {
+
+        File myFile = new File(name);
+        Scanner fileinput = new Scanner(myFile);
+
+        while (fileinput.hasNext()) {
+            String input1 = fileinput.next();
+            int index = Integer.parseInt(input1);
+
+            String input2 = fileinput.next();
+            double value = Double.parseDouble(input2);
+
+            this.add(index, value);
+        }
+    }
+
     public static void main(String[] args) {
 
         Tree myTree = new Tree();
 
+        System.out.println("Tree Test:");
+
         myTree.insert(5, 5.5);
         myTree.insert(6, 6.6);
-        myTree.insert(4, 4.4);
         myTree.insert(3, 3.3);
+        myTree.insert(4, 4.4);
+        myTree.insert(1, 1.1);
+        myTree.insert(8, 8.8);
+        myTree.insert(3, 3.9);
+        myTree.insert(7, 7.7);
+        myTree.insert(2, 2.2);
 
-        myTree.printTree();
+        myTree.printMe();
 
-        double szukam = myTree.get(3);
+        double szukam = myTree.get(2);
+        System.out.println("\nPoszukiwany element o indeksie 2: " + szukam);
+        szukam = myTree.get(9);
+        System.out.println("Poszukiwany element o indeksie 9: " + szukam);
 
-        System.out.println("Poszukiwany element o indeksie 3: " + szukam);
+        System.out.println("\nVector Test:");
+
+        Tree vector = new Tree();
+
+        try {
+            vector.readFile("nazwapliku.txt");
+        } catch (FileNotFoundException ex) {
+            System.out.println("Podany plik nie istnieje.");
+        }
+        vector.printMe();
+
+        szukam = vector.get(1);
+        System.out.println("\nPoszukiwany element o indeksie 1: " + szukam);
+        szukam = vector.get(6);
+        System.out.println("Poszukiwany element o indeksie 6: " + szukam);
 
     }
 
