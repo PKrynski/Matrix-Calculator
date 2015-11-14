@@ -25,9 +25,9 @@ public class Matrix {
 
         if (fileinput.hasNext()) {
             input = fileinput.next();
-            this.width = Integer.parseInt(input);
-            input = fileinput.next();
             this.height = Integer.parseInt(input);
+            input = fileinput.next();
+            this.width = Integer.parseInt(input);
         }
 
         while (fileinput.hasNext()) {
@@ -54,8 +54,14 @@ public class Matrix {
     public void printMe() {
 
         for (int row = 0; row < this.height; row++) {
+
+            Tree currentRow;
             
-            Tree currentRow = wiersze.get(row);
+            try {
+                currentRow = wiersze.get(row);
+            } catch (Exception e) {
+                currentRow = new Tree();
+            }
 
             for (int column = 0; column < this.width; column++) {
 
@@ -71,11 +77,11 @@ public class Matrix {
         Matrix macierz1 = new Matrix();
 
         try {
-            macierz1.readMatrix("macierz1.txt");
+            macierz1.readMatrix("macierz2.txt");
         } catch (FileNotFoundException ex) {
             System.out.println("Podany plik nie istnieje.");
         }
-        
+
         macierz1.printMe();
 
     }
