@@ -51,6 +51,21 @@ public class Matrix {
         }
     }
 
+    public void printMe() {
+
+        for (int row = 0; row < this.height; row++) {
+            
+            Tree currentRow = wiersze.get(row);
+
+            for (int column = 0; column < this.width; column++) {
+
+                double number = currentRow.get(column);
+                System.out.print(number + " ");
+            }
+            System.out.println("");
+        }
+    }
+
     public static void main(String[] args) {
 
         Matrix macierz1 = new Matrix();
@@ -60,6 +75,8 @@ public class Matrix {
         } catch (FileNotFoundException ex) {
             System.out.println("Podany plik nie istnieje.");
         }
+        
+        macierz1.printMe();
 
     }
 
