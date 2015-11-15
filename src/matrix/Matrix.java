@@ -16,6 +16,59 @@ public class Matrix {
     private int width;
     private int height;
 
+    public Matrix add(Matrix second) {
+
+        Matrix result = new Matrix();
+
+        if (this.height == second.height && this.width == second.width) {
+
+            result.height = this.height;
+            result.width = this.width;
+
+            for (int row = 0; row < result.height; row++) {
+
+                Tree currentRowM1;
+
+                try {
+                    currentRowM1 = this.wiersze.get(row);
+                } catch (Exception e) {
+                    currentRowM1 = new Tree();
+                }
+
+                Tree currentRowM2;
+
+                try {
+                    currentRowM2 = second.wiersze.get(row);
+                } catch (Exception e) {
+                    currentRowM2 = new Tree();
+                }
+
+                Tree currentRowResult;
+
+                try {
+                    currentRowResult = result.wiersze.get(row);
+                } catch (Exception e) {
+                    currentRowResult = new Tree();
+                    result.wiersze.add(row, currentRowResult);
+                }
+
+                for (int column = 0; column < result.width; column++) {
+
+                    double value = currentRowM1.get(column) + currentRowM2.get(column);
+
+                    currentRowResult.insert(column, value);
+
+                }
+                
+            }
+
+            return result;
+
+        } else {
+            return null;
+        }
+    }
+
     public void readMatrix(String name) throws FileNotFoundException {
 
         File myFile = new File(name);
@@ -56,7 +109,7 @@ public class Matrix {
         for (int row = 0; row < this.height; row++) {
 
             Tree currentRow;
-            
+
             try {
                 currentRow = wiersze.get(row);
             } catch (Exception e) {
@@ -70,6 +123,7 @@ public class Matrix {
             }
             System.out.println("");
         }
+        System.out.println("");
     }
 
     public static void main(String[] args) {
@@ -83,6 +137,29 @@ public class Matrix {
         }
 
         macierz1.printMe();
+
+        Matrix test1 = new Matrix();
+        Matrix test2 = new Matrix();
+
+        try {
+            test1.readMatrix("m1add.txt");
+        } catch (FileNotFoundException ex) {
+            System.out.println("Podany plik nie istnieje.");
+        }
+        test1.printMe();
+
+        try {
+            test2.readMatrix("m2add.txt");
+        } catch (FileNotFoundException ex) {
+            System.out.println("Podany plik nie istnieje.");
+        }
+        test2.printMe();
+
+        Matrix additionResult;
+
+        additionResult = test1.add(test2);
+        
+        additionResult.printMe();
 
     }
 
