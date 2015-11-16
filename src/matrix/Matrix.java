@@ -137,7 +137,8 @@ public class Matrix {
         }
 
         macierz1.printMe();
-
+        
+        System.out.println("Dodawanie:");
         Matrix test1 = new Matrix();
         Matrix test2 = new Matrix();
 
@@ -158,8 +159,26 @@ public class Matrix {
         Matrix additionResult;
 
         additionResult = test1.add(test2);
-        
+        System.out.println("Wynik dodawania:");
         additionResult.printMe();
+        
+        System.out.println("Mnożenie:");
+        Matrix mult1 = new Matrix();
+        Matrix mult2 = new Matrix();
+
+        try {
+            mult1.readMatrix("m1mult.txt");
+        } catch (FileNotFoundException ex) {
+            System.out.println("Podany plik nie istnieje.");
+        }
+        mult1.printMe();
+
+        try {
+            mult2.readMatrix("m2mult.txt");
+        } catch (FileNotFoundException ex) {
+            System.out.println("Podany plik nie istnieje.");
+        }
+        mult2.printMe();
 
     }
 
