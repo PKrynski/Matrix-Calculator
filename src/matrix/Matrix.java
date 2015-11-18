@@ -16,7 +16,7 @@ public class Matrix {
     private int width;
     private int height;
 
-    public Matrix add(Matrix second) {
+    public Matrix add(Matrix second) throws WrongSizeException {
 
         Matrix result = new Matrix();
 
@@ -59,13 +59,13 @@ public class Matrix {
                     currentRowResult.insert(column, value);
 
                 }
-                
+
             }
 
             return result;
 
         } else {
-            return null;
+            throw new WrongSizeException();
         }
     }
 
@@ -126,59 +126,75 @@ public class Matrix {
         System.out.println("");
     }
 
+    public class WrongSizeException extends Exception {
+
+        @Override
+        public String toString() {
+            return "Podane macierze mają niewłaściwy rozmiar dla tej operacji.";
+        }
+    }
+
     public static void main(String[] args) {
 
-        Matrix macierz1 = new Matrix();
+        if (args.length < 3) {
+            System.out.println("Podano za mało argumentów.");
+            System.out.println("Podaj dwie nazwy plików zawierających macierze i żądane działanie między nimi.");
+            System.out.println("Dozwolone operacje:");
+            System.out.println("Dodawanie: +");
+            System.out.println("Mnożenie: x");
+        } else {
 
-        try {
-            macierz1.readMatrix("macierz2.txt");
-        } catch (FileNotFoundException ex) {
-            System.out.println("Podany plik nie istnieje.");
+            String m1name = args[0];
+            String operation = args[1];
+            String m2name = args[2];
+
+            Matrix matrix1 = new Matrix();
+            Matrix matrix2 = new Matrix();
+
+            try {
+                matrix1.readMatrix(m1name);
+            } catch (FileNotFoundException ex) {
+                System.out.println("Podany plik nie istnieje: " + m1name);
+            }
+
+            try {
+                matrix2.readMatrix(m2name);
+            } catch (FileNotFoundException ex) {
+                System.out.println("Podany plik nie istnieje: " + m2name);
+            }
+
+            System.out.println("Wprowadzone dane:\n");
+
+            matrix1.printMe();
+            matrix2.printMe();
+
+            Matrix result;
+
+            switch (operation) {
+                case "+":
+                    System.out.println("Żądana operacja: dodawanie macierzy");
+
+                    try {
+                        result = matrix1.add(matrix2);
+                        System.out.println("Wynik:\n");
+                        result.printMe();
+                    } catch (WrongSizeException ex) {
+                        System.err.println(ex);
+                    }
+
+                    break;
+                case "x":
+                    System.out.println("Żądana operacja: mnożenie macierzy");
+                    break;
+                default:
+                    System.out.println("Nie rozpoznano operacji!");
+                    System.out.println("Dozwolone operacje:");
+                    System.out.println("- Dodawanie: +");
+                    System.out.println("- Mnożenie:  x");
+                    break;
+            }
+
         }
-
-        macierz1.printMe();
-        
-        System.out.println("Dodawanie:");
-        Matrix test1 = new Matrix();
-        Matrix test2 = new Matrix();
-
-        try {
-            test1.readMatrix("m1add.txt");
-        } catch (FileNotFoundException ex) {
-            System.out.println("Podany plik nie istnieje.");
-        }
-        test1.printMe();
-
-        try {
-            test2.readMatrix("m2add.txt");
-        } catch (FileNotFoundException ex) {
-            System.out.println("Podany plik nie istnieje.");
-        }
-        test2.printMe();
-
-        Matrix additionResult;
-
-        additionResult = test1.add(test2);
-        System.out.println("Wynik dodawania:");
-        additionResult.printMe();
-        
-        System.out.println("Mnożenie:");
-        Matrix mult1 = new Matrix();
-        Matrix mult2 = new Matrix();
-
-        try {
-            mult1.readMatrix("m1mult.txt");
-        } catch (FileNotFoundException ex) {
-            System.out.println("Podany plik nie istnieje.");
-        }
-        mult1.printMe();
-
-        try {
-            mult2.readMatrix("m2mult.txt");
-        } catch (FileNotFoundException ex) {
-            System.out.println("Podany plik nie istnieje.");
-        }
-        mult2.printMe();
 
     }
 
