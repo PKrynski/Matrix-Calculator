@@ -4,8 +4,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import tree.Tree;
 
 /**
@@ -15,8 +13,8 @@ import tree.Tree;
 public class Matrix {
 
     private ArrayList<Tree> wiersze = new ArrayList<>();
-    private int width;
-    private int height;
+    public int width;
+    public int height;
 
     public Matrix add(Matrix second) throws WrongSizeException {
 
@@ -45,14 +43,8 @@ public class Matrix {
                     currentRowM2 = new Tree();
                 }
 
-                Tree currentRowResult;
-
-                try {
-                    currentRowResult = result.wiersze.get(row);
-                } catch (Exception e) {
-                    currentRowResult = new Tree();
-                    result.wiersze.add(row, currentRowResult);
-                }
+                Tree currentRowResult = new Tree();
+                result.wiersze.add(row, currentRowResult);
 
                 for (int column = 0; column < result.width; column++) {
 
@@ -75,12 +67,46 @@ public class Matrix {
 
         Matrix result = new Matrix();
 
-        if (this.height == second.width) {
+        if (this.width == second.height) {
 
             result.height = this.height;
             result.width = second.width;
 
             for (int row = 0; row < result.height; row++) {
+
+                Tree currentRowM1;
+
+                try {
+                    currentRowM1 = this.wiersze.get(row);
+                } catch (Exception e) {
+                    currentRowM1 = new Tree();
+                }
+
+                Tree currentRowResult = new Tree();
+                result.wiersze.add(row, currentRowResult);
+
+                for (int column = 0; column < result.width; column++) {
+
+                    double itemSum = 0;
+
+                    for (int index = 0; index < this.width; index++) {
+
+                        double rowValue = currentRowM1.get(index);
+                        double colValue;
+
+                        try {
+                            colValue = second.wiersze.get(index).get(column);
+                        } catch (Exception e) {
+                            colValue = 0.0;
+                        }
+
+                        itemSum += rowValue * colValue;
+
+                    }
+
+                    currentRowResult.insert(column, itemSum);
+
+                }
 
             }
 
