@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import tree.Tree;
 
 /**
@@ -59,6 +61,26 @@ public class Matrix {
                     currentRowResult.insert(column, value);
 
                 }
+
+            }
+
+            return result;
+
+        } else {
+            throw new WrongSizeException();
+        }
+    }
+
+    public Matrix multiply(Matrix second) throws WrongSizeException {
+
+        Matrix result = new Matrix();
+
+        if (this.height == second.width) {
+
+            result.height = this.height;
+            result.width = second.width;
+
+            for (int row = 0; row < result.height; row++) {
 
             }
 
@@ -185,6 +207,15 @@ public class Matrix {
                     break;
                 case "x":
                     System.out.println("Żądana operacja: mnożenie macierzy");
+
+                    try {
+                        result = matrix1.multiply(matrix2);
+                        System.out.println("Wynik:\n");
+                        result.printMe();
+                    } catch (WrongSizeException ex) {
+                        System.err.println(ex);
+                    }
+
                     break;
                 default:
                     System.out.println("Nie rozpoznano operacji!");
