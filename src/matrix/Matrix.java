@@ -203,12 +203,14 @@ public class Matrix {
                 matrix1.readMatrix(m1name);
             } catch (FileNotFoundException ex) {
                 System.out.println("Podany plik nie istnieje: " + m1name);
+                return;
             }
 
             try {
                 matrix2.readMatrix(m2name);
             } catch (FileNotFoundException ex) {
                 System.out.println("Podany plik nie istnieje: " + m2name);
+                return;
             }
 
             System.out.println("Wprowadzone dane:\n");
